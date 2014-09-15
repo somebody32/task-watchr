@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.1.6'
+gem 'twitter', '~> 5.11'
 
 group :development, :test do
+  gem 'dotenv-rails', "~> 0.11"
   gem 'rspec-rails', '~> 3.1.0'
 end
 
