@@ -1,7 +1,7 @@
 # TODO
 
-* setup rubocop
-* setup CI 
+* <del>setup rubocop</del>
+* <del>setup CI </del>
 * create social reader module
 * create task poster general module
 * implement Redbooth adapter
