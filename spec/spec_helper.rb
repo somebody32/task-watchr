@@ -87,8 +87,9 @@ RSpec.configure do |config|
 =end
 end
 
-require 'vcr'
+require "vcr"
+
 VCR.configure do |c|
-  c.cassette_library_dir = './spec/fixtures/vcr_cassettes'
+  c.cassette_library_dir = "./spec/fixtures/vcr_cassettes"
   c.hook_into :webmock
 end

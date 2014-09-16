@@ -14,5 +14,6 @@ group :development do
 end
 
 group :test do
-  gem 'vcr', '~> 2.9.3', require: false
+  gem 'vcr', '~> 2.9.3'
+  gem 'webmock', '~> 1.18'
 end
