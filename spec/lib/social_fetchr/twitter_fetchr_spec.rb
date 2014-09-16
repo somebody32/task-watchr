@@ -13,11 +13,33 @@ describe SocialFetchr::TwitterFetchr do
     )
   end
 
-  it "returns all the tweets" do
-    VCR.use_cassette("twitter") do
-      expect(subject.fetch_all.size).to eql 6
+  let(:all_tweets_texts) do
+    [
+      "@task_watchr_bot test tweet 6",
+      "@task_watchr_bot test tweet 5",
+      "@task_watchr_bot test tweet 4",
+      "@task_watchr_bot test tweet 3",
+      "@task_watchr_bot test tweet 2",
+      "@task_watchr_bot test tweet 1"
+    ]
+  end
+
+  context "fetching all" do
+    it "returns all" do
+      VCR.use_cassette("twitter") do
+        tweets = subject.fetch_all
+        expect(tweets.map(&:text)).to eql all_tweets_texts
+      end
+    end
+
+    it "paginates using count option" do
+      VCR.use_cassette("twitter_with_pagination") do
+        tweets = subject.fetch_all(count: 1)
+        expect(tweets.map(&:text)).to eql all_tweets_texts
+      end
     end
   end
 
+  it "handles errors and rate limits"
   it "returns all new tweets starting from passed one"
 end
