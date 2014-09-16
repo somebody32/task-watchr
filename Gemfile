@@ -12,3 +12,7 @@ group :development do
   gem 'guard-rspec', '~> 4.3', require: false
   gem 'rubocop', '~> 0.26', require: false
 end
+
+group :test do
+  gem 'vcr', '~> 2.9.3', require: false
+end

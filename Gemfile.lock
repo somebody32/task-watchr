@@ -167,6 +167,7 @@ GEM
       simple_oauth (~> 0.2.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    vcr (2.9.3)
 
 PLATFORMS
   ruby
@@ -178,3 +179,4 @@ DEPENDENCIES
   rspec-rails (~> 3.1.0)
   rubocop (~> 0.26)
   twitter (~> 5.11)
+  vcr (~> 2.9.3)
