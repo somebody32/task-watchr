@@ -26,7 +26,7 @@ describe SocialFetchr::TwitterFetchr do
   end
 
   let(:mentions_endpoint) do
-    'https://api.twitter.com/1.1/statuses/mentions_timeline.json'
+    "https://api.twitter.com/1.1/statuses/mentions_timeline.json"
   end
 
   context "fetching all" do
@@ -45,55 +45,58 @@ describe SocialFetchr::TwitterFetchr do
     end
 
     it "handles the rate limits on the first try" do
-      stub_request(
-        :any,
-        mentions_endpoint
-      ).with(query: { count: 200 })
-       .to_raise(Twitter::Error::TooManyRequests)
+      # imitate rate limit on initial request
+      imitate_rate_limit(count: 200)
 
-      error_handler = ->(error) do
-        stub_request(
-          :any,
-          mentions_endpoint
-        ).with(query: { count: 200 })
-         .to_return(
-          body: '{}',
-          headers: {content_type: 'application/json; charset=utf-8'}
-        )
+      error_handler = lambda do |_|
+        # disabling ratelimiting and imitating empty response
+        imitate_response({ count: 200 }, "{}")
       end
 
-      subject.fetch_all(error_handler: error_handler)
+      expect(subject.fetch_all(error_handler: error_handler)).to be_empty
     end
 
     it "handles the rate limits when paging" do
-      stub_request(
-        :any,
-        mentions_endpoint
-      ).with(query: { count: 1 })
-       .to_return(
-          body: '[{"id":1,"text":"@task_watchr_bot test tweet 6"}]',
-          headers: {content_type: 'application/json; charset=utf-8'}
-       )
-      stub_request(
-        :any,
-        mentions_endpoint
-      ).with(query: { count: 1, max_id: 0 })
-       .to_raise(Twitter::Error::TooManyRequests)
+      # imitating first successfull response
+      imitate_response(
+        { count: 1 },
+        '[{"id":1,"text":"@task_watchr_bot test tweet 6"}]'
+      )
 
-      error_handler = ->(error) do
-        stub_request(
-          :any,
-          mentions_endpoint
-        ).with(query: { count: 1, max_id: 0 })
-         .to_return(
-          body: '{}',
-          headers: {content_type: 'application/json; charset=utf-8'}
-        )
+      # and the next one will fail with rate limit
+      imitate_rate_limit(count: 1, max_id: 0)
+
+      error_handler = lambda do |_|
+        # and then rate limit pass and twitter returns empty response
+        imitate_response({ count: 1, max_id: 0 }, "{}")
       end
 
-      subject.fetch_all(count: 1, error_handler: error_handler)
+      expect(
+        subject.fetch_all(count: 1, error_handler: error_handler).map(&:text)
+      ).to eql(["@task_watchr_bot test tweet 6"])
     end
   end
 
   it "returns all new tweets starting from passed one"
+
+  def imitate_rate_limit(query_params)
+    stub_request(
+      :any,
+      mentions_endpoint
+    )
+    .with(query: query_params)
+    .to_raise(Twitter::Error::TooManyRequests)
+  end
+
+  def imitate_response(query_params, body)
+    stub_request(
+      :any,
+      mentions_endpoint
+    )
+    .with(query: query_params)
+    .to_return(
+      body: body,
+      headers: { content_type: "application/json; charset=utf-8" }
+    )
+  end
 end
