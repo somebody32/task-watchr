@@ -13,8 +13,9 @@ module SocialFetchr
       end
     end
 
-    def fetch_all(count: 200, error_handler: nil)
-      error_handler ||= ->(error) { sleep error.rate_limit.reset_in + 1 }
+    DEFAULT_ERROR_HANDLER = ->(error) { sleep error.rate_limit.reset_in + 1 }
+
+    def fetch_all(count: 200, error_handler: DEFAULT_ERROR_HANDLER)
       begin
         all_tweets = client.mentions_timeline(count: count)
       rescue Twitter::Error::TooManyRequests => e
