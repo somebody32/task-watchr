@@ -78,7 +78,7 @@ describe SocialFetchr::TwitterFetchr do
   end
 
   context "fetching new tweets" do
-    let(:tweet_4_id) { 511758804300464128 }
+    let(:tweet_4_id) { 511_758_804_300_464_128 }
 
     it "returns all new tweets starting from passed one" do
       VCR.use_cassette("twitter_fetching_since") do
@@ -102,7 +102,6 @@ describe SocialFetchr::TwitterFetchr do
       end
     end
   end
-
 
   def imitate_rate_limit(query_params)
     stub_request(

@@ -1,5 +1,4 @@
 require "twitter"
-require "pry"
 
 module SocialFetchr
   class TwitterFetchr
@@ -23,17 +22,7 @@ module SocialFetchr
     end
 
     def fetch_since(since_id:, count: 200, error_handler: DEFAULT_ERROR_HANDLER)
-      all_tweets = []
-      max_id = nil
-      loop do
-        options = { count: count, since_id: since_id }
-        options.merge!(max_id: max_id) if max_id
-        next_batch = client.mentions_timeline(options)
-        all_tweets.concat(next_batch)
-        break if next_batch.empty? || next_batch.size < count
-        max_id = next_batch.last.id - 1
-      end
-      all_tweets
+      fetch_with_cursor(since_id: since_id, count: count)
     end
 
     private
@@ -45,29 +34,31 @@ module SocialFetchr
       retry
     end
 
-    # it is possible to split this method even more, but for my taste
-    # this will introduce more eye-hops when grasping on it.
-    # And it is a very easy one, so it is better to disable rubocop's warnings
-    # rubocop:disable Metrics/MethodLength
     def paginate_deep_starting(tweets, count, error_handler)
       max_id = tweets.last.id
       begin
+        fetch_with_cursor(collector: tweets, max_id: max_id, count: count)
+      rescue Twitter::Error::TooManyRequests => e
+        error_handler.call(e)
+        retry
+      end
+    end
+
+    # rubocop:disable Metrics/MethodLength
+    def fetch_with_cursor(collector: [], count:, since_id: nil, max_id: nil)
+      collector.tap do |all_tweets|
+        options = { count: count }
+        options.merge!(since_id: since_id) if since_id
         loop do
           # need to substract 1 from max_id to avoid duplicating the last
           # tweet from the previous batch. This is an 'official' hack:
           # https://dev.twitter.com/rest/public/timelines
-          next_batch = client.mentions_timeline(
-            max_id: max_id - 1,
-            count: count
-          )
-          tweets.concat(next_batch)
+          options.merge!(max_id: max_id - 1) if max_id
+          next_batch = client.mentions_timeline(options)
+          all_tweets.concat(next_batch)
           break if next_batch.empty? || next_batch.size < count
           max_id = next_batch.last.id
         end
-        tweets
-      rescue Twitter::Error::TooManyRequests => e
-        error_handler.call(e)
-        retry
       end
     end
     # rubocop:enable Metrics/MethodLength
