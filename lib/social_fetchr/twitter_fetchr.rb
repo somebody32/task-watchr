@@ -1,4 +1,5 @@
 require "twitter"
+require "pry"
 
 module SocialFetchr
   class TwitterFetchr
@@ -19,6 +20,20 @@ module SocialFetchr
       all_tweets = get_initial_batch(count, error_handler)
       return all_tweets if all_tweets.size < count
       paginate_deep_starting(all_tweets, count, error_handler)
+    end
+
+    def fetch_since(since_id:, count: 200, error_handler: DEFAULT_ERROR_HANDLER)
+      all_tweets = []
+      max_id = nil
+      loop do
+        options = { count: count, since_id: since_id }
+        options.merge!(max_id: max_id) if max_id
+        next_batch = client.mentions_timeline(options)
+        all_tweets.concat(next_batch)
+        break if next_batch.empty? || next_batch.size < count
+        max_id = next_batch.last.id - 1
+      end
+      all_tweets
     end
 
     private

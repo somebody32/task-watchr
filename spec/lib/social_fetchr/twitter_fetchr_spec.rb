@@ -77,7 +77,32 @@ describe SocialFetchr::TwitterFetchr do
     end
   end
 
-  it "returns all new tweets starting from passed one"
+  context "fetching new tweets" do
+    let(:tweet_4_id) { 511758804300464128 }
+
+    it "returns all new tweets starting from passed one" do
+      VCR.use_cassette("twitter_fetching_since") do
+        expect(
+          subject.fetch_since(since_id: tweet_4_id).map(&:text)
+        ).to eql([
+          "@task_watchr_bot test tweet 6",
+          "@task_watchr_bot test tweet 5"
+        ])
+      end
+    end
+
+    it "paginates if there are more tweets than count var" do
+      VCR.use_cassette("twitter_fetching_since_paginate") do
+        expect(
+          subject.fetch_since(since_id: tweet_4_id, count: 1).map(&:text)
+        ).to eql([
+          "@task_watchr_bot test tweet 6",
+          "@task_watchr_bot test tweet 5"
+        ])
+      end
+    end
+  end
+
 
   def imitate_rate_limit(query_params)
     stub_request(
