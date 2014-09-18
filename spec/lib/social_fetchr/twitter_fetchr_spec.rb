@@ -101,6 +101,30 @@ describe SocialFetchr::TwitterFetchr do
         ])
       end
     end
+
+    it "handles rate limiting" do
+      # imitating first successfull response
+      imitate_response(
+        { count: 1, since_id: tweet_4_id },
+        '[{"id":1,"text":"@task_watchr_bot test tweet 6"}]'
+      )
+
+      # and the next one will fail with rate limit
+      imitate_rate_limit(count: 1, max_id: 0, since_id: tweet_4_id)
+
+      error_handler = lambda do |_|
+        # and then rate limit pass and twitter returns empty response
+        imitate_response({ count: 1, max_id: 0, since_id: tweet_4_id }, "{}")
+      end
+
+      expect(
+        subject.fetch_since(
+          since_id: tweet_4_id,
+          count: 1,
+          error_handler: error_handler
+        ).map(&:text)
+      ).to eql(["@task_watchr_bot test tweet 6"])
+    end
   end
 
   def imitate_rate_limit(query_params)

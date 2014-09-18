@@ -18,11 +18,11 @@ module SocialFetchr
     def fetch_all(count: 200, error_handler: DEFAULT_ERROR_HANDLER)
       all_tweets = get_initial_batch(count, error_handler)
       return all_tweets if all_tweets.size < count
-      paginate_deep_starting(all_tweets, count, error_handler)
+      paginate_down_starting(all_tweets, count, error_handler)
     end
 
     def fetch_since(since_id:, count: 200, error_handler: DEFAULT_ERROR_HANDLER)
-      fetch_with_cursor(since_id: since_id, count: count)
+      paginate_up_starting(since_id, count, error_handler)
     end
 
     private
@@ -34,10 +34,19 @@ module SocialFetchr
       retry
     end
 
-    def paginate_deep_starting(tweets, count, error_handler)
+    def paginate_down_starting(tweets, count, error_handler)
       max_id = tweets.last.id
       begin
         fetch_with_cursor(collector: tweets, max_id: max_id, count: count)
+      rescue Twitter::Error::TooManyRequests => e
+        error_handler.call(e)
+        retry
+      end
+    end
+
+    def paginate_up_starting(since_id, count, error_handler)
+      begin
+        fetch_with_cursor(since_id: since_id, count: count)
       rescue Twitter::Error::TooManyRequests => e
         error_handler.call(e)
         retry
