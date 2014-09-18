@@ -18,7 +18,9 @@ module SocialFetchr
     def fetch_all(count: 200, error_handler: DEFAULT_ERROR_HANDLER)
       all_tweets = get_initial_batch(count, error_handler)
       return all_tweets if all_tweets.size < count
-      paginate_down_starting(all_tweets, count, error_handler)
+
+      start_from = all_tweets.last.id
+      all_tweets + paginate_down_starting(start_from, count, error_handler)
     end
 
     def fetch_since(since_id:, count: 200, error_handler: DEFAULT_ERROR_HANDLER)
@@ -34,28 +36,28 @@ module SocialFetchr
       retry
     end
 
-    def paginate_down_starting(tweets, count, error_handler)
-      max_id = tweets.last.id
-      begin
-        fetch_with_cursor(collector: tweets, max_id: max_id, count: count)
-      rescue Twitter::Error::TooManyRequests => e
-        error_handler.call(e)
-        retry
-      end
+    def paginate_down_starting(max_id, count, error_handler)
+      paginate({ max_id: max_id }, count, error_handler)
     end
 
     def paginate_up_starting(since_id, count, error_handler)
-      begin
-        fetch_with_cursor(since_id: since_id, count: count)
-      rescue Twitter::Error::TooManyRequests => e
-        error_handler.call(e)
-        retry
-      end
+      paginate({ since_id: since_id }, count, error_handler)
     end
 
+    def paginate(cursor, count, error_handler)
+      fetch_with_cursor(cursor, count)
+    rescue Twitter::Error::TooManyRequests => e
+      error_handler.call(e)
+      retry
+    end
+
+    # it is possible to split this method more, but I don't think that it
+    # make it easier to understand
     # rubocop:disable Metrics/MethodLength
-    def fetch_with_cursor(collector: [], count:, since_id: nil, max_id: nil)
-      collector.tap do |all_tweets|
+    def fetch_with_cursor(cursor = {}, count)
+      since_id = cursor[:since_id]
+      max_id   = cursor[:max_id]
+      [].tap do |all_tweets|
         options = { count: count }
         options.merge!(since_id: since_id) if since_id
         loop do
