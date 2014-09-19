@@ -1,6 +1,3 @@
-require "dotenv"
-Dotenv.load
-
 require "social_fetchr/twitter_fetchr"
 require "webmock/rspec"
 

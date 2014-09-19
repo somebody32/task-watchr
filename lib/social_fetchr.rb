@@ -4,7 +4,6 @@ module SocialFetchr
   module_function
 
   # TODO
-  # 1. implement PostsTrackr
   # 2. implment posts scrubber
   # 3. clean up this mess
 

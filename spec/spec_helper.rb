@@ -88,9 +88,14 @@ RSpec.configure do |config|
 end
 
 require "vcr"
-
 VCR.configure do |c|
   c.allow_http_connections_when_no_cassette = true
   c.cassette_library_dir = "./spec/fixtures/vcr_cassettes"
   c.hook_into :webmock
 end
+
+require "dotenv"
+Dotenv.load(
+  File.expand_path("../../.env.test", __FILE__),
+  File.expand_path("../../.env",  __FILE__)
+)
