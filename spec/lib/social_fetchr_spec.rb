@@ -19,6 +19,10 @@ describe SocialFetchr do
     )
   end
 
+  let!(:task_postr) do
+    stub_const("TaskPostr", double(post_task: nil))
+  end
+
   let(:twitter_fetchr) { double }
   before(:each) do
     allow(SocialFetchr::TwitterFetchr).to(
@@ -52,7 +56,17 @@ describe SocialFetchr do
         )
       end
 
-      it "checks for updates since the last post" do
+      it "pass all new posts to postr" do
+        expect(task_postr).to(
+          receive(:post_task)
+          .with("@yourhandle test text")
+          .ordered
+        )
+        expect(task_postr).to(
+          receive(:post_task)
+          .with("@yourhandle test text 2")
+          .ordered
+        )
         described_class.check_updates(social_credentials)
       end
 
