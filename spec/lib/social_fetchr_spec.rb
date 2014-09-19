@@ -13,13 +13,57 @@ describe SocialFetchr do
   end
 
   let!(:posts_trackr) do
-    stub_const("SocialFetchr::PostsTrackr", double)
+    stub_const(
+      "SocialFetchr::PostsTrackr",
+      double(store_last_processed_post: nil)
+    )
+  end
+
+  let(:twitter_fetchr) { double }
+  before(:each) do
+    allow(SocialFetchr::TwitterFetchr).to(
+      receive(:new)
+      .with(social_credentials)
+      .and_return(twitter_fetchr)
+    )
   end
 
   context "no previous import selected" do
     context "there is a last post stored for the client" do
-      it "check for updates since the last post"
+      let(:last_post_id) { "stored_id" }
+      let(:new_mentions) do
+        [
+          OpenStruct.new(id: 2, text: "@yourhandle test text 2"),
+          OpenStruct.new(id: 1, text: "@yourhandle test text")
+        ]
+      end
 
+      before do
+        allow(posts_trackr).to(
+          receive(:last_processed_post)
+          .with(client: social_client_key)
+          .and_return last_post_id
+        )
+
+        allow(twitter_fetchr).to(
+          receive(:fetch_since)
+          .with(since_id: last_post_id)
+          .and_return(new_mentions)
+        )
+      end
+
+      it "checks for updates since the last post" do
+        described_class.check_updates(social_credentials)
+      end
+
+      it "stores the last processed post" do
+        expect(posts_trackr).to(
+          receive(:store_last_processed_post)
+          .with(client: social_client_key, post_id: new_mentions.first.id)
+        )
+
+        described_class.check_updates(social_credentials)
+      end
     end
 
     context "there is no last post for the client" do
@@ -32,33 +76,29 @@ describe SocialFetchr do
       end
 
       it "remembers the last social post" do
-        allow(SocialFetchr::TwitterFetchr).to(
-          receive(:new)
-          .with(social_credentials)
-          .and_return(twitter_fetchr = double)
-        )
+        first_mention = OpenStruct.new(id: 1, text: "@yourhandle test text")
         allow(twitter_fetchr).to(
           receive(:fetch_all)
           .with(count: 1)
-          .and_return([OpenStruct.new(id: 1, text: "test text")])
+          .and_return([first_mention])
         )
+
         expect(posts_trackr).to(
           receive(:store_last_processed_post)
-          .with(client: social_client_key, post_id: 1)
+          .with(client: social_client_key, post_id: first_mention.id)
         )
         described_class.check_updates(social_credentials)
       end
+
+      it "does not fail if there are no posts" do
+        allow(twitter_fetchr).to(
+          receive(:fetch_all)
+          .with(count: 1)
+          .and_return([])
+        )
+        expect(posts_trackr).not_to receive(:store_last_processed_post)
+        described_class.check_updates(social_credentials)
+      end
     end
-
-
-  end
-
-  xit "check for updates and passes the data to core postr" do
-    allow(SocialFetchr::TwitterFetchr).to(
-      receive(:new)
-      .with(social_credentials)
-      .and_return(twitter_fetch = double)
-    )
-    described_class.check_updates(social_credentials)
   end
 end
