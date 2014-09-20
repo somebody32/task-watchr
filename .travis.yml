@@ -5,3 +5,5 @@ rvm:
 script:
   - bundle exec rspec
   - bundle exec rubocop
+services:
+  - redis-server
