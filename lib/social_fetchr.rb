@@ -1,4 +1,5 @@
 require "social_fetchr/twitter_fetchr"
+require "social_fetchr/post_trackr"
 
 module SocialFetchr
   module_function
@@ -12,7 +13,7 @@ module SocialFetchr
     tw_client = SocialFetchr::TwitterFetchr.new(social_credentials)
 
     last_post =
-      SocialFetchr::PostsTrackr.last_processed_post(client: client_key)
+      SocialFetchr::PostTrackr.last_processed_post(client: client_key)
 
     if last_post
       new_posts = tw_client.fetch_since(since_id: last_post)
@@ -25,7 +26,7 @@ module SocialFetchr
     end
 
     if post_to_store
-      SocialFetchr::PostsTrackr.store_last_processed_post(
+      SocialFetchr::PostTrackr.store_last_processed_post(
         client: client_key,
         post_id: post_to_store.id
       )

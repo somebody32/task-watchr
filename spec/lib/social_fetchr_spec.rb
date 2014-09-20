@@ -12,13 +12,7 @@ describe SocialFetchr do
     }
   end
 
-  let!(:posts_trackr) do
-    stub_const(
-      "SocialFetchr::PostsTrackr",
-      double(store_last_processed_post: nil)
-    )
-  end
-
+  let(:posts_trackr) { SocialFetchr::PostTrackr }
   let!(:task_postr) do
     stub_const("TaskPostr", double(post_task: nil))
   end
