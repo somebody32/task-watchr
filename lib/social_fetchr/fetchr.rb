@@ -5,9 +5,14 @@ require "social_fetchr/post_scrubbr"
 module SocialFetchr
   class Fetchr
     attr_reader :client_key, :social_adapter
+    private_class_method :new
 
     def self.check_updates(social_credentials)
       new(social_credentials).check_and_process_updates
+    end
+
+    def self.process_all(social_credentials)
+      new(social_credentials).fetch_and_process_all
     end
 
     def initialize(social_credentials)
@@ -17,6 +22,11 @@ module SocialFetchr
 
     def check_and_process_updates
       last_processed_post = process_new_posts
+      store_last_post(last_processed_post)
+    end
+
+    def fetch_and_process_all
+      last_processed_post = process_all_posts
       store_last_post(last_processed_post)
     end
 
@@ -35,6 +45,10 @@ module SocialFetchr
       else
         latest_post
       end
+    end
+
+    def process_all_posts
+      process_posts(social_adapter.fetch_all)
     end
 
     def latest_post

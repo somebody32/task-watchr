@@ -51,16 +51,13 @@ describe SocialFetchr do
       end
 
       it "pass all new posts to postr with post-scrubbing" do
-        expect(task_postr).to(
-          receive(:post_task)
-          .with("test text")
-          .ordered
-        )
-        expect(task_postr).to(
-          receive(:post_task)
-          .with("test text 2")
-          .ordered
-        )
+        ["test text", "test text 2"].each do |task_text|
+          expect(task_postr).to(
+            receive(:post_task)
+            .with(task_text)
+            .ordered
+          )
+        end
         described_class.check_updates(social_credentials)
       end
 
@@ -71,6 +68,35 @@ describe SocialFetchr do
         )
 
         described_class.check_updates(social_credentials)
+      end
+    end
+
+    context "full import" do
+      let(:mentions) do
+        [
+          OpenStruct.new(id: 3, text: "@yourhandle test text 3"),
+          OpenStruct.new(id: 2, text: "@yourhandle test text 2"),
+          OpenStruct.new(id: 1, text: "@yourhandle test text")
+        ]
+      end
+
+      it "processes all the mentions and stores the last one" do
+        allow(twitter_fetchr).to(
+          receive(:fetch_all)
+          .and_return(mentions)
+        )
+        ["test text", "test text 2", "test text 3"].each do |task_text|
+          expect(task_postr).to(
+            receive(:post_task)
+            .with(task_text)
+            .ordered
+          )
+        end
+        expect(posts_trackr).to(
+          receive(:store_last_processed_post)
+          .with(client: social_client_key, post_id: mentions.first.id)
+        )
+        described_class.process_all(social_credentials)
       end
     end
 
