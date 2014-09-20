@@ -50,15 +50,15 @@ describe SocialFetchr do
         )
       end
 
-      it "pass all new posts to postr" do
+      it "pass all new posts to postr with post-scrubbing" do
         expect(task_postr).to(
           receive(:post_task)
-          .with("@yourhandle test text")
+          .with("test text")
           .ordered
         )
         expect(task_postr).to(
           receive(:post_task)
-          .with("@yourhandle test text 2")
+          .with("test text 2")
           .ordered
         )
         described_class.check_updates(social_credentials)

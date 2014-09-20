@@ -2,12 +2,12 @@ require "social_fetchr/twitter_fetchr"
 require "webmock/rspec"
 
 VCR.configure do |c|
-  [
-    "TWITTER_KEY",
-    "TWITTER_SECRET",
-    "TWITTER_ACCESS_TOKEN",
-    "TWITTER_ACCESS_SECRET"
-  ].each do |const|
+  %w(
+    TWITTER_KEY
+    TWITTER_SECRET
+    TWITTER_ACCESS_TOKEN
+    TWITTER_ACCESS_SECRET
+  ).each do |const|
     c.filter_sensitive_data("<#{const}>") { ENV[const] }
   end
 end
