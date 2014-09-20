@@ -10,7 +10,7 @@ describe SocialFetchr::PostScrubbr do
 
   it "does not remove anything else" do
     expect(described_class.scrub("mention with @handle inside the text"))
-      .to eql("mention with @handle inside text")
+      .to eql("mention with @handle inside the text")
   end
 
 end
