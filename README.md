@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/somebody32/task-watchr.svg?branch=master)](https://travis-ci.org/somebody32/task-watchr)
+
+
 # TODO
 
 * <del>setup rubocop</del>
@@ -7,10 +10,10 @@
   * <del>option to read until the end</del>
   * <del>rate limiting</del>
 * create social watcher module
-  * initiate fetcher with credentials
-  * read data from fetcher
+  * <del>initiate fetcher with credentials</del>
+  * <del>read data from fetcher</del>
   * pass it
-  * store last processed tweet
+  * <del>store last processed tweet</del>
 * create task poster general module
   * implement Redbooth adapter
 * wire up everything via rails + sidekiq
