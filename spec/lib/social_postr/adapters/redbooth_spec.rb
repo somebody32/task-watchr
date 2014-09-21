@@ -41,7 +41,6 @@ describe SocialPostr::Adapters::Redbooth do
     end
   end
 
-
   it "raise an error if token is expired" do
     Timecop.travel(Time.now + 7200) do
       VCR.use_cassette("redbooth_token_expires") do
