@@ -157,6 +157,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timecop (0.7.1)
     timers (4.0.1)
       hitimes
     twitter (5.11.0)
@@ -188,6 +189,7 @@ DEPENDENCIES
   redis
   rspec-rails (~> 3.1.0)
   rubocop (~> 0.26)
+  timecop (~> 0.7)
   twitter (~> 5.11)
   vcr (~> 2.9.3)
   webmock (~> 1.18)

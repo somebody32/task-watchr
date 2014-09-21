@@ -18,4 +18,5 @@ group :test do
   gem 'vcr', '~> 2.9.3'
   gem 'webmock', '~> 1.18'
   gem 'database_cleaner', '~> 1.3'
+  gem 'timecop', '~> 0.7'
 end

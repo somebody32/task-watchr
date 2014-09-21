@@ -1,9 +1,11 @@
-require "ostruct"
 require "faraday"
 require "json"
 
 module SocialPostr
   module Adapters
+    module Errors
+      class ExpiredToken < StandardError; end
+    end
     class Redbooth
       attr_reader :adapter_settings
       BASE_REQUEST_URL="https://redbooth.com"
@@ -25,13 +27,10 @@ module SocialPostr
             project_id: adapter_settings.fetch(:project_id)
           }
         end
-        OpenStruct.new(
-          auth: {
-            token: adapter_settings[:token],
-            refresh_token: adapter_settings[:refresh_token]
-          },
-          api_response: JSON.parse(response.body)
-        )
+        if response.status == 401 && response.headers["www-authenticate"].match(/The access token expired/)
+          raise SocialPostr::Adapters::Errors::ExpiredToken
+        end
+        JSON.parse(response.body)
       end
     end
   end

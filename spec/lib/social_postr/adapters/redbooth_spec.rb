@@ -1,4 +1,5 @@
 require "social_postr/adapters/redbooth"
+require "timecop"
 
 describe SocialPostr::Adapters::Redbooth do
   let(:task_desc) { "created by task_watchr" }
@@ -6,7 +7,6 @@ describe SocialPostr::Adapters::Redbooth do
   let(:adapter_settings) do
     {
       token:         ENV["REDBOOTH_TOKEN"],
-      refresh_token: ENV["REDBOOTH_REFRESH_TOKEN"],
       project_id:    ENV["REDBOOTH_PROJECT_ID"],
       task_list_id:  ENV["REDBOOTH_TASK_LIST_ID"],
       task_description: task_desc,
@@ -26,16 +26,11 @@ describe SocialPostr::Adapters::Redbooth do
     end
   end
 
-  it "creates task and returns access tokens back" do
+  it "creates task" do
     VCR.use_cassette("redbooth_task_creation") do
       creation_result = subject.post_task(task_name)
-      expect(creation_result.auth).to(
-        eql(
-          token: ENV["REDBOOTH_TOKEN"],
-          refresh_token: ENV["REDBOOTH_REFRESH_TOKEN"]
-        )
-      )
-      expect(creation_result.api_response).to(
+
+      expect(creation_result).to(
         include(
           "type" => "Task",
           "name" => task_name,
@@ -47,5 +42,13 @@ describe SocialPostr::Adapters::Redbooth do
   end
 
 
-  it "refreshes token if needed"
+  it "raise an error if token is expired" do
+    Timecop.travel(Time.now + 7200) do
+      VCR.use_cassette("redbooth_token_expires") do
+        expect { subject.post_task(task_name) }.to(
+          raise_exception(SocialPostr::Adapters::Errors::ExpiredToken)
+        )
+      end
+    end
+  end
 end
