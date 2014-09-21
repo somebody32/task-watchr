@@ -1,0 +1,56 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://redbooth.com/api/3/tasks
+    body:
+      encoding: UTF-8
+      string: description=created+by+task_watchr&is_private=true&name=test+task&project_id=1244009&task_list_id=2405642
+    headers:
+      User-Agent:
+      - Faraday v0.9.0
+      Authorization:
+      - Bearer <REDBOOTH_TOKEN>
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 21 Sep 2014 08:32:16 GMT
+      Etag:
+      - '"f0072e5d026120982bbbfc4bd0b13df9"'
+      Server:
+      - nginx
+      Status:
+      - 201 Created
+      X-Rack-Cache:
+      - invalidate, pass
+      X-Request-Id:
+      - 8339fc6a46ac150b203da6253661802f
+      X-Runtime:
+      - '0.122266'
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Content-Length:
+      - '605'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"type":"Task","created_at":1411288336,"updated_at":1411288336,"id":14683420,"name":"test
+        task","task_list_id":2405642,"comments_count":0,"assigned_id":null,"is_private":true,"project_id":1244009,"urgent":false,"user_id":963980,"position":5,"last_activity_id":null,"record_conversion_type":null,"record_conversion_id":null,"metadata":{},"subtasks_count":0,"resolved_subtasks_count":0,"watcher_ids":[963980],"description":"created
+        by task_watchr","description_html":"<p>\ncreated by task_watchr</p>","description_updated_by_user_id":963980,"updated_by_id":null,"deleted":false,"status":"new","due_on":null}'
+    http_version: 
+  recorded_at: Sun, 21 Sep 2014 08:32:16 GMT
+recorded_with: VCR 2.9.3
