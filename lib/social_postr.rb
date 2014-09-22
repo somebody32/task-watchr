@@ -9,7 +9,6 @@ module SocialPostr
 
   # TODO
   # 1. need to understand how to get adapter settings
-  # 2. need to understand how token updaters will work
   # 3. `run poster` should definitely be inside a bg-worker
 
   def post_task(task)
