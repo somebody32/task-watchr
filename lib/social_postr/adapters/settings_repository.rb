@@ -6,7 +6,8 @@ module SocialPostr
       module_function
 
       def fetch(adapter_name)
-        db_client.hgetall(adapter_db_key(adapter_name))
+        raw_settings = db_client.hgetall(adapter_db_key(adapter_name))
+        symbolize_keys(raw_settings)
       end
 
       def save(adapter_name, settings = {})
@@ -20,7 +21,12 @@ module SocialPostr
       def adapter_db_key(adapter_name)
         "postr_#{adapter_name}_settings"
       end
-      private_class_method :db_client, :adapter_db_key
+
+      # I do not want to add dependency on ActiveSupport just for that
+      def symbolize_keys(hash)
+        Hash[hash.map { |(k, v)| [k.to_sym,v] }]
+      end
+      private_class_method :db_client, :adapter_db_key, :symbolize_keys
     end
   end
 end
