@@ -1,4 +1,4 @@
-require "redbooth_token_updater"
+require "social_postr/token_updaters/redbooth"
 
 VCR.configure do |c|
   %w(
@@ -11,7 +11,7 @@ VCR.configure do |c|
   end
 end
 
-describe RedboothTokenUpdater do
+describe SocialPostr::TokenUpdaters::Redbooth do
   it "updates and returns a new token pair" do
     VCR.use_cassette("redbooth_token_update") do
       new_tokens = described_class.update_token(ENV['REDBOOTH_TOKEN'], ENV['REDBOOTH_REFRESH_TOKEN'])
