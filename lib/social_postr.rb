@@ -1,5 +1,6 @@
 require "social_postr/adapters/redbooth"
 require "social_postr/adapters/errors"
+require "social_postr/token_updaters/redbooth"
 
 module SocialPostr
   module_function
@@ -22,7 +23,7 @@ module SocialPostr
   def run_poster(adapter, task)
     adapter.post_task(task)
   rescue Adapters::Errors::ExpiredToken
-    TokenUpdater::Redbooth.update_token
+    TokenUpdaters::Redbooth.update_token
     retry
   end
 end

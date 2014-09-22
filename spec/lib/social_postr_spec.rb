@@ -18,7 +18,7 @@ describe SocialPostr do
       .and_raise(SocialPostr::Adapters::Errors::ExpiredToken)
       .ordered
     )
-    token_updater = stub_const("SocialPostr::TokenUpdater::Redbooth", double)
+    token_updater = SocialPostr::TokenUpdaters::Redbooth
     expect(token_updater).to receive(:update_token)
     expect(adapter).to receive(:post_task).with("test task").ordered
     described_class.post_task("test task")
