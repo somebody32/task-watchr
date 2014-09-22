@@ -24,7 +24,7 @@ module SocialPostr
 
       # I do not want to add dependency on ActiveSupport just for that
       def symbolize_keys(hash)
-        Hash[hash.map { |(k, v)| [k.to_sym,v] }]
+        Hash[hash.map { |(k, v)| [k.to_sym, v] }]
       end
       private_class_method :db_client, :adapter_db_key, :symbolize_keys
     end
