@@ -1,6 +1,7 @@
 require "social_fetchr/twitter_fetchr"
 require "social_fetchr/post_trackr"
 require "social_fetchr/post_scrubbr"
+require "social_postr"
 
 module SocialFetchr
   class Fetchr
@@ -61,7 +62,7 @@ module SocialFetchr
 
     def process_posts(posts)
       posts.reverse.each do |post|
-        TaskPostr.post_task SocialFetchr::PostScrubbr.scrub(post.text)
+        SocialPostr.post_task SocialFetchr::PostScrubbr.scrub(post.text)
       end
       posts.first
     end

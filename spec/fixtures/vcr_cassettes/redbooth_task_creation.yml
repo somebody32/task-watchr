@@ -5,7 +5,7 @@ http_interactions:
     uri: https://redbooth.com/api/3/tasks
     body:
       encoding: UTF-8
-      string: description=created+by+task_watchr&is_private=true&name=test+task&project_id=1244009&task_list_id=2405642
+      string: description=created+by+task_watchr&is_private=true&name=test+task&project_id=1244009&task_list_id=2405642&token=<REDBOOTH_TOKEN>
     headers:
       User-Agent:
       - Faraday v0.9.0
@@ -27,9 +27,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 21 Sep 2014 08:32:16 GMT
+      - Mon, 22 Sep 2014 09:39:27 GMT
       Etag:
-      - '"f0072e5d026120982bbbfc4bd0b13df9"'
+      - '"6ee599ac207cdba09adffab910b9b088"'
       Server:
       - nginx
       Status:
@@ -37,20 +37,20 @@ http_interactions:
       X-Rack-Cache:
       - invalidate, pass
       X-Request-Id:
-      - 8339fc6a46ac150b203da6253661802f
+      - 05b3f9952a6ddc7f69d3b912694a33ef
       X-Runtime:
-      - '0.122266'
+      - '0.126822'
       X-Ua-Compatible:
       - IE=Edge,chrome=1
       Content-Length:
-      - '605'
+      - '606'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
-      string: '{"type":"Task","created_at":1411288336,"updated_at":1411288336,"id":14683420,"name":"test
-        task","task_list_id":2405642,"comments_count":0,"assigned_id":null,"is_private":true,"project_id":1244009,"urgent":false,"user_id":963980,"position":5,"last_activity_id":null,"record_conversion_type":null,"record_conversion_id":null,"metadata":{},"subtasks_count":0,"resolved_subtasks_count":0,"watcher_ids":[963980],"description":"created
+      string: '{"type":"Task","created_at":1411378767,"updated_at":1411378767,"id":14692269,"name":"test
+        task","task_list_id":2405642,"comments_count":0,"assigned_id":null,"is_private":true,"project_id":1244009,"urgent":false,"user_id":963980,"position":14,"last_activity_id":null,"record_conversion_type":null,"record_conversion_id":null,"metadata":{},"subtasks_count":0,"resolved_subtasks_count":0,"watcher_ids":[963980],"description":"created
         by task_watchr","description_html":"<p>\ncreated by task_watchr</p>","description_updated_by_user_id":963980,"updated_by_id":null,"deleted":false,"status":"new","due_on":null}'
     http_version: 
-  recorded_at: Sun, 21 Sep 2014 08:32:16 GMT
+  recorded_at: Mon, 22 Sep 2014 09:39:28 GMT
 recorded_with: VCR 2.9.3

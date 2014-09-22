@@ -22,13 +22,16 @@ module SocialPostr
       private
 
       def parse_adapter_settings(settings)
-        {
+        adapter_settings = {
           token:        settings.fetch(:token),
           project_id:   settings.fetch(:project_id),
           task_list_id: settings.fetch(:task_list_id),
-          description:  settings.fetch(:task_description) { "" },
           is_private:   settings.fetch(:task_private) { false }
         }
+        if settings[:task_description]
+          adapter_settings.merge!(description: settings[:task_description])
+        end
+        adapter_settings
       end
 
       def make_task_api_call(task_text)

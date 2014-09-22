@@ -1,5 +1,6 @@
 require "social_postr/adapters/redbooth"
 require "timecop"
+require "pry"
 
 describe SocialPostr::Adapters::Redbooth do
   let(:task_desc) { "created by task_watchr" }
@@ -26,7 +27,7 @@ describe SocialPostr::Adapters::Redbooth do
     end
   end
 
-  it "creates task" do
+  it "creates task with full settings" do
     VCR.use_cassette("redbooth_task_creation") do
       creation_result = subject.post_task(task_name)
 
@@ -41,13 +42,31 @@ describe SocialPostr::Adapters::Redbooth do
     end
   end
 
-  it "raise an error if token is expired" do
-    Timecop.travel(Time.now + 7200) do
-      VCR.use_cassette("redbooth_token_expires") do
-        expect { subject.post_task(task_name) }.to(
-          raise_exception(SocialPostr::Adapters::Errors::ExpiredToken)
+  it "creates task with bare minimum settings" do
+    adapter_settings.delete(:task_description)
+    adapter_settings.delete(:task_private)
+    VCR.use_cassette("redbooth_task_creation_with_bare_settings") do
+      creation_result = subject.post_task(task_name)
+
+      expect(creation_result).to(
+        include(
+          "type" => "Task",
+          "name" => task_name,
+          "is_private" => false,
+          "description" => nil
         )
-      end
+      )
     end
   end
+
+  # need to move to webmock
+  xit "raise an error if token is expired" do
+    VCR.use_cassette("redbooth_token_expires") do
+      expect { subject.post_task(task_name) }.to(
+        raise_exception(SocialPostr::Adapters::Errors::ExpiredToken)
+      )
+    end
+  end
+
+  it "raises an error if any other unexpectable response arrived"
 end
