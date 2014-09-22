@@ -13,17 +13,17 @@ describe SocialFetchr do
   end
 
   let(:posts_trackr) { SocialFetchr::PostTrackr }
-  let!(:task_postr) do
-    stub_const("TaskPostr", double(post_task: nil))
-  end
+  let(:task_postr) { SocialPostr }
 
   let(:twitter_fetchr) { double }
-  before(:each) do
+  before do
     allow(SocialFetchr::TwitterFetchr).to(
       receive(:new)
       .with(social_credentials)
       .and_return(twitter_fetchr)
     )
+
+    allow(task_postr).to receive(:post_task)
   end
 
   context "no previous import selected" do
