@@ -58,7 +58,9 @@ describe SocialFetchr do
             .ordered
           )
         end
-        described_class.check_updates(credentials: social_credentials)
+        described_class.check_and_process_updates(
+          credentials: social_credentials
+        )
       end
 
       it "stores the last processed post" do
@@ -67,7 +69,9 @@ describe SocialFetchr do
           .with(client: social_client_key, post_id: new_mentions.first.id)
         )
 
-        described_class.check_updates(credentials: social_credentials)
+        described_class.check_and_process_updates(
+          credentials: social_credentials
+        )
       end
     end
 
@@ -121,7 +125,9 @@ describe SocialFetchr do
           receive(:store_last_processed_post)
           .with(client: social_client_key, post_id: first_mention.id)
         )
-        described_class.check_updates(credentials: social_credentials)
+        described_class.check_and_process_updates(
+          credentials: social_credentials
+        )
       end
 
       it "does not fail if there are no posts" do
@@ -131,7 +137,9 @@ describe SocialFetchr do
           .and_return([])
         )
         expect(posts_trackr).not_to receive(:store_last_processed_post)
-        described_class.check_updates(credentials: social_credentials)
+        described_class.check_and_process_updates(
+          credentials: social_credentials
+        )
       end
     end
   end

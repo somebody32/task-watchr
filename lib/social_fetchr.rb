@@ -4,7 +4,7 @@ require "social_fetchr/workers/importer"
 module SocialFetchr
   module_function
 
-  def check_updates(credentials:, async: false)
+  def check_and_process_updates(credentials:, async: false)
     if async
       Workers::Updater.perform_async(credentials)
     else
