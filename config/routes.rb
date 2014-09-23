@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get "/auth/:provider/callback", to: "adapters#connect"
-  require 'sidekiq/web'
-  mount Sidekiq::Web => '/sidekiq'
+  scope module: :adapters do
+    resource :redbooth_settings, only: [:edit, :update]
+    get "/auth/redbooth/callback", to: "redbooth_settings#connect"
+  end
+  root to: "fetchr_status#show"
 end

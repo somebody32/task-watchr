@@ -1,0 +1,9 @@
+<h1>Edit Settings — Redbooth</h1>
+
+<%= form_tag(redbooth_settings_path, method: :put) do %>
+  <p><%= text_field_tag :project_id %></p>
+  <p><%= text_field_tag :task_list_id %></p>
+  <p><%= text_field_tag :task_private %></p>
+  <p><%= text_field_tag :task_description %></p>
+  <%= submit_tag "Save changes" %>
+<% end -%>
