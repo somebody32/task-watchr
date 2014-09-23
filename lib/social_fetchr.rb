@@ -19,4 +19,8 @@ module SocialFetchr
       Workers::Importer.perform_inline(credentials)
     end
   end
+
+  def running?
+    Workers::Updater.running?
+  end
 end

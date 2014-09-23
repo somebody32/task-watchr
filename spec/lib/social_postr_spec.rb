@@ -1,16 +1,19 @@
 require "social_postr"
-
 require "sidekiq/testing"
-Sidekiq::Testing.inline!
 
 describe SocialPostr do
   let(:adapter_settings) { { key: "some value" } }
   before do
+    Sidekiq::Testing.inline!
     allow(SocialPostr::Adapters::SettingsRepository).to(
       receive(:fetch)
       .with("redbooth")
       .and_return(adapter_settings)
     )
+  end
+
+  after(:all) do
+    Sidekiq::Testing.fake!
   end
 
   it "runs through all adapters calling post task" do

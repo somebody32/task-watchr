@@ -1,11 +1,19 @@
 require "sidekiq"
+require "sidekiq/api"
 require "social_fetchr/fetchr"
 
 module SocialFetchr
   module Workers
     class Updater
-      include Sidekiq::Worker
       DEFAULT_INTERVAL = 10 * 60
+      QUEUE = :social_updater
+      include Sidekiq::Worker
+      sidekiq_options queue: QUEUE
+
+      def self.running?
+        !Sidekiq::Queue.new(QUEUE).size.zero? ||
+        Sidekiq::ScheduledSet.new.any? { |job| job.klass == name }
+      end
 
       def self.perform_inline(credentials)
         new.process_job(credentials)
