@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.6'
 gem 'twitter', '~> 5.11'
 gem 'redis', '~> 3.1.0'
+gem 'sidetiq'
 gem 'omniauth-redbooth', '~> 0.0'
 
 group :development, :test do
