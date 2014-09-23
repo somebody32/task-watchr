@@ -8,7 +8,7 @@ module SocialFetchr
     if async
       Workers::Updater.perform_async(credentials)
     else
-      Workers::Updater.new.perform(credentials)
+      Workers::Updater.perform_inline(credentials)
     end
   end
 
@@ -16,7 +16,7 @@ module SocialFetchr
     if async
       Workers::Importer.perform_async(credentials)
     else
-      Workers::Importer.new.perform(credentials)
+      Workers::Importer.perform_inline(credentials)
     end
   end
 end
