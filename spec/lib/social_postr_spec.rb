@@ -1,5 +1,8 @@
 require "social_postr"
 
+require "sidekiq/testing"
+Sidekiq::Testing.inline!
+
 describe SocialPostr do
   let(:adapter_settings) { { key: "some value" } }
   before do
