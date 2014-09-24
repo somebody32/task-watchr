@@ -1,2 +1,2 @@
 web: bundle exec rails server -p $PORT
-worker: bundle exec sidekiq -q default -q social_updater
+worker: bundle exec sidekiq -e production -C config/sidekiq.yml
