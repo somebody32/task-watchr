@@ -10,6 +10,7 @@ gem 'omniauth-twitter', '~> 1.0'
 
 gem 'twitter-bootstrap-rails', '~> 3.2'
 gem 'jquery-rails'
+gem 'uglifier'
 
 group :development, :test do
   gem 'dotenv-rails', '~> 0.11'
