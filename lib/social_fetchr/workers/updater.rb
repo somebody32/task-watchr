@@ -19,10 +19,14 @@ module SocialFetchr
         new.process_job(credentials)
       end
 
+      def self.enqueue(credentials)
+        perform_in(DEFAULT_INTERVAL, credentials)
+      end
+
       def perform(credentials)
         process_job(credentials)
       ensure
-        self.class.perform_in(DEFAULT_INTERVAL, credentials)
+        self.class.enqueue(credentials)
       end
 
       def process_job(credentials)

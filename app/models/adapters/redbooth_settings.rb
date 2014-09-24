@@ -3,20 +3,18 @@ module Adapters
     include ActiveModel::Model
 
     attr_accessor :project_id, :task_list_id, :task_private,
-                  :task_description, :token, :refresh_token
+                  :task_description, :token, :refresh_token, :key, :secret
     validates :project_id, :task_list_id,
               presence: true,
               numericality: { only_integer: true }
 
     def self.fetch
-      SocialPostr::Adapters::SettingsRepository.fetch(:redbooth)
+      new(SocialPostr::Adapters::SettingsRepository.fetch(:redbooth))
     end
 
     def save
       SocialPostr::Adapters::SettingsRepository.save(:redbooth, attributes)
     end
-
-    private
 
     def attributes
       {

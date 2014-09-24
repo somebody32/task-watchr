@@ -1,9 +1,9 @@
 <h1>Edit Settings — Redbooth</h1>
 
-<%= form_tag(redbooth_settings_path, method: :put) do %>
-  <p><%= text_field_tag :project_id %></p>
-  <p><%= text_field_tag :task_list_id %></p>
-  <p><%= text_field_tag :task_private %></p>
-  <p><%= text_field_tag :task_description %></p>
+<%= form_for(@settings, url: redbooth_settings_path, method: :put) do |form| %>
+  <p><%= form.select :task_list_id, @task_lists %></p>
+  <p><%= form.radio_button :task_private, true %></p>
+  <p><%= form.radio_button :task_private, false %></p>
+  <p><%= form.text_field :task_description %></p>
   <%= submit_tag "Save changes" %>
 <% end -%>
