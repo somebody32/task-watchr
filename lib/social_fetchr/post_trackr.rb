@@ -13,7 +13,7 @@ module SocialFetchr
     end
 
     def db_client
-      Redis.new(url: ENV["REDIS_URL"])
+      $redis
     end
     private_class_method :db_client
   end

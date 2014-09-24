@@ -36,6 +36,6 @@ class FetchrSocialSettings
   end
 
   def self.db_client
-    Redis.new(url: ENV["REDIS_URL"])
+    $redis
   end
 end

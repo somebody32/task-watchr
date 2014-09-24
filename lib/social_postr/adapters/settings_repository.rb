@@ -15,7 +15,7 @@ module SocialPostr
       end
 
       def db_client
-        Redis.new(url: ENV["REDIS_URL"])
+        $redis
       end
 
       def adapter_db_key(adapter_name)
