@@ -18,3 +18,5 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/RaiseArgs:
   Enabled: false
+Style/GlobalVars:
+  Enabled: false
