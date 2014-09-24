@@ -47,7 +47,6 @@ module SocialPostr
         if token_expired?
           fail Errors::ExpiredToken
         else
-          puts api_response.inspect
           fail Errors::UnexpectedAPIResponse.new(api_response: api_response)
         end
       end
