@@ -23,8 +23,9 @@ twitter and task mgmt accounts, configure adapters and kick-off the fetchr.
 * Twitter's rate-limits handling
 * Full importing of your mentions timeline
 * Watching for a new mentions
+* Auto-retrying for failed postings
 * Possibility to work in sync/async mode
-* Redbooth integration & Token updates
+* Redbooth integration
 
 ## Current limitations
 
@@ -34,7 +35,7 @@ twitter and task mgmt accounts, configure adapters and kick-off the fetchr.
 
 ### Frontend Limitations
 
-* Adapters settings page is too coupled with the main site, better to be
+* Adapters' settings page is too coupled with the main site, better to be
 an engine
 * Redbooth settings page makes a sync-network call to get a list of tasklists
 * Adding new adapters should be simplified
@@ -55,9 +56,17 @@ an engine
 
 ## How to run locally?
 
+### Requirements
+
+* Ruby 2.1
+* Redis
+
+### Actions
+
 * clone it
 * `bundle install`
-* take a look into `.env.sample` and create your own `.env` with right values
+* take a look into `.env.sample` and create your own `.env` with the right
+values
 * run tests `bundle exec rspec`. Note that twitter fetch specs will fail even
 with right ENV-vars, because its bundled to a specific account
 
