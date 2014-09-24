@@ -1,3 +1,4 @@
+ruby '2.1.2'
 source 'https://rubygems.org'
 
 gem 'rails', '4.1.6'
@@ -11,6 +12,8 @@ gem 'omniauth-twitter', '~> 1.0'
 gem 'twitter-bootstrap-rails', '~> 3.2'
 gem 'jquery-rails'
 gem 'uglifier'
+
+gem 'rails_12factor'
 
 group :development, :test do
   gem 'dotenv-rails', '~> 0.11'
