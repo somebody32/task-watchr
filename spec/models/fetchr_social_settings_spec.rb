@@ -21,10 +21,8 @@ describe FetchrSocialSettings do
     DatabaseCleaner.cleaning do
       described_class.new(user_settings).save
       expect(described_class.fetch).to include(
-        {
-          app_key: ENV["TWITTER_KEY"],
-          app_secret: ENV["TWITTER_SECRET"]
-        }
+        app_key: ENV["TWITTER_KEY"],
+        app_secret: ENV["TWITTER_SECRET"]
       )
     end
   end

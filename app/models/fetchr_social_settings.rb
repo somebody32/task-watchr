@@ -2,7 +2,7 @@ class FetchrSocialSettings
   include ActiveModel::Model
   DB_KEY = :social_fetchr_settings
   attr_accessor :client_key, :client_secret, :name
-  validates_presence_of :client_key, :client_secret
+  validates :client_key, :client_secret, presence: true
 
   def self.fetch
     db_client.hgetall(DB_KEY).symbolize_keys
