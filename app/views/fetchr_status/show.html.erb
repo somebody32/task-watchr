@@ -1,15 +1,16 @@
-<h1>Fetchr is running? — <%= SocialFetchr.running? %></h1>
+<h1><%= @manager.fetchr_status %></h1>
 
 <p>Twitter Account Status</p>
-<p>State</p>
-<p><%= button_to "Connect", "/auth/twitter/", method: "get" %></p>
+<p><%= @manager.twitter_status %></p>
+<p><%= button_to @manager.twitter_action_text, "/auth/twitter/", method: "get" %></p>
 
 <h2>Adapters' State</h2>
 <p>Redbooth</p>
-<p>State</p>
-<p><%= button_to "Connect", "/auth/redbooth/", method: "get" %></p>
-<p><%= link_to "Configure", edit_redbooth_settings_path %></p>
-
+<p><%= @manager.redbooth_status %></p>
+<p><%= button_to @manager.redbooth_action_text, "/auth/redbooth/", method: "get" %></p>
+<% if @manager.redbooth_connected? %>
+  <p><%= link_to "Configure", edit_redbooth_settings_path %></p>
+<% end %>
 
 <% if @manager.ready_to_start? %>
   <p><%= button_to "Start", start_fetchr_path, method: "post" %></p>

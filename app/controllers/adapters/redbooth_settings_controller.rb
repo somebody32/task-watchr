@@ -1,7 +1,7 @@
 module Adapters
   class RedboothSettingsController < ApplicationController
     def edit
-      @settings = RedboothSettingsDecorator.decorated_settings
+      @settings = RedboothSettingsPresenter.decorated_settings
       # omg network request in the controller!
       # I could cache the task list initialy when getting oauth token,
       # but this will not update automatically when new task lists are created

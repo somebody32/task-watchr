@@ -1,6 +1,6 @@
 class FetchrStatusController < ApplicationController
   def show
-    @manager = FetchrStatusManager
+    @manager = FetchrStatusDecorator
   end
 
   def start

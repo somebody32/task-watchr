@@ -4,9 +4,6 @@ module Adapters
 
     attr_accessor :project_id, :task_list_id, :task_private,
                   :task_description, :token, :refresh_token, :key, :secret
-    validates :project_id, :task_list_id,
-              presence: true,
-              numericality: { only_integer: true }
 
     def self.fetch
       new(SocialPostr::Adapters::SettingsRepository.fetch(:redbooth))
