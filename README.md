@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/somebody32/task-watchr.svg?branch=master)](https://travis-ci.org/somebody32/task-watchr)
-
+[Live Demo](http://task-watchr.herokuapp.com/)
 
 # Task Watchr
 
@@ -32,6 +32,7 @@ twitter and task mgmt accounts, configure adapters and kick-off the fetchr.
 ### Core limitations
 
 * No way to stop the fetchr
+* Sidekiq runs on a default settings, need to tune them up
 
 ### Frontend Limitations
 
@@ -39,6 +40,7 @@ twitter and task mgmt accounts, configure adapters and kick-off the fetchr.
 an engine
 * Redbooth settings page makes a sync-network call to get a list of tasklists
 * Adding new adapters should be simplified
+* Runs on Webrick, need to setup something serious.
 
 ## How to add a new adapter?
 
