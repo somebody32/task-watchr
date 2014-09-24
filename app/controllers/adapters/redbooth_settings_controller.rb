@@ -8,6 +8,9 @@ module Adapters
       # The best way is to make an async-request from the client,
       # but the current timebox limited me from doing so
       @task_lists = RedboothTaskListRetriever.fetch_task_lists(@settings.token)
+    rescue
+      flash[:error] = "Could not connect to Redboot. Please update the token"
+      redirect_to :root
     end
 
     def update
