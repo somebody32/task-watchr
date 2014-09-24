@@ -10,7 +10,8 @@
 <p><%= button_to "Connect", "/auth/redbooth/", method: "get" %></p>
 <p><%= link_to "Configure", edit_redbooth_settings_path %></p>
 
-<h2>Stats?</h2>
 
-<p><%= button_to "Start", start_fetchr_path, method: "post" %></p>
-<p><%= button_to "Import all Previous", import_and_start_fetchr_path, method: "post" %></p>
+<% if @manager.ready_to_start? %>
+  <p><%= button_to "Start", start_fetchr_path, method: "post" %></p>
+  <p><%= button_to "Import all Previous", import_and_start_fetchr_path, method: "post" %></p>
+<% end %>

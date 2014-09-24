@@ -1,10 +1,11 @@
 class FetchrStatusController < ApplicationController
   def show
+    @manager = FetchrStatusManager
   end
 
   def start
     SocialFetchr.check_and_process_updates(
-      credentials: FetchrSocialSettings.fetch,
+      credentials: FetchrSocialSettings.for_fetchr,
       async: true
     )
     redirect_to :root

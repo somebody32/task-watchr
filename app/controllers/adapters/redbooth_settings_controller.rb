@@ -1,37 +1,27 @@
 module Adapters
   class RedboothSettingsController < ApplicationController
     def edit
-      @settings = RedboothSettings.fetch
-      token = @settings.token
-      task_lists_raw = Faraday.get do |req|
-        req.url "https://redbooth.com/api/3/task_lists"
-        req.headers["Authorization"] = "Bearer #{token}"
-      end
-      @settings.task_list_id = [@settings.task_list_id, @settings.project_id].join("/")
-      logger.info JSON.parse(task_lists_raw.body)
-      @task_lists = JSON.parse(task_lists_raw.body).map do |t|
-        [t["name"], [t["id"], t["project_id"]].join("/")]
-      end
+      @settings = RedboothSettingsDecorator.decorated_settings
+      # omg network request in the controller!
+      # I could cache the task list initialy when getting oauth token,
+      # but this will not update automatically when new task lists are created
+      # The best way is to make an async-request from the client,
+      # but the current timebox limited me from doing so
+      @task_lists = RedboothTaskListRetriever.fetch_task_lists(@settings.token)
     end
 
     def update
-      settings = RedboothSettings.fetch.attributes
-      params_ready = settings.merge(params[:adapters_redbooth_settings])
-      settings = RedboothSettings.new(params_ready)
-      task_list_id, project_id = settings.task_list_id.split("/")
-      settings.task_list_id = task_list_id
-      settings.project_id = project_id
-      settings.save
+      RedboothSettingsRepository.update(params[:adapters_redbooth_settings])
       redirect_to :root
     end
 
     def connect
       credentials = request.env["omniauth.auth"]["credentials"]
 
-      RedboothSettings.new(
+      RedboothSettingsRepository.update_tokens(
         token: credentials["token"],
         refresh_token: credentials["refresh_token"]
-      ).save
+      )
 
       redirect_to :root
     end

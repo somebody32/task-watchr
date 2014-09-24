@@ -9,6 +9,10 @@ class FetchrSocialSettings
     db_client.hgetall(DB_KEY).symbolize_keys
   end
 
+  def self.satisfied?
+    fetch.values_at(*FETCHR_KEYS).all?
+  end
+
   def save
     return false unless valid?
     self.class.db_client.mapped_hmset(DB_KEY, attributes)
