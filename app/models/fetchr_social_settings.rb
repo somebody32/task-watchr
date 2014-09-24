@@ -1,6 +1,7 @@
 class FetchrSocialSettings
   include ActiveModel::Model
   DB_KEY = :social_fetchr_settings
+  FETCHR_KEYS = [:app_key, :app_secret, :client_key, :client_secret]
   attr_accessor :client_key, :client_secret, :name
   validates :client_key, :client_secret, presence: true
 
@@ -12,6 +13,10 @@ class FetchrSocialSettings
     return false unless valid?
     self.class.db_client.mapped_hmset(DB_KEY, attributes)
     true
+  end
+
+  def self.for_fetchr
+    fetch.slice(*FETCHR_KEYS)
   end
 
   private

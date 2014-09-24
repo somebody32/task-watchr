@@ -17,6 +17,7 @@ module SocialFetchr
     end
 
     def initialize(social_credentials)
+      social_credentials = symbolize_keys(social_credentials)
       @client_key = social_credentials.fetch(:client_key)
       @social_adapter = initialize_social_adapter(social_credentials)
     end
@@ -73,6 +74,10 @@ module SocialFetchr
         client: client_key,
         post_id: post.id
       )
+    end
+
+    def symbolize_keys(hash)
+      Hash[hash.map { |(k, v)| [k.to_sym, v] }]
     end
   end
 end

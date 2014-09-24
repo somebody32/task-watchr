@@ -36,7 +36,7 @@ SocialFetchr.check_and_process_updates(credentials:
     app_secret:    ENV["TWITTER_SECRET"],
     client_key:    ENV["TWITTER_ACCESS_TOKEN"],
     client_secret: ENV["TWITTER_ACCESS_SECRET"]
-  }s
+  }
 )
 
 puts "requesting current tasks and matching with originals"

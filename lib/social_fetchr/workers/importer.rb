@@ -4,7 +4,9 @@ require "social_fetchr/workers/updater"
 module SocialFetchr
   module Workers
     class Importer
+      QUEUE = :social_updater
       include Sidekiq::Worker
+      sidekiq_options queue: QUEUE
 
       def self.perform_inline(credentials)
         new.process(credentials)

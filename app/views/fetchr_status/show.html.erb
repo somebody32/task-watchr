@@ -7,9 +7,10 @@
 <h2>Adapters' State</h2>
 <p>Redbooth</p>
 <p>State</p>
-<p><p><%= button_to "Connect", "/auth/redbooth/", method: "get" %></p></p>
+<p><%= button_to "Connect", "/auth/redbooth/", method: "get" %></p>
 <p><%= link_to "Configure", edit_redbooth_settings_path %></p>
 
 <h2>Stats?</h2>
 
-<button>Run!</button>
+<p><%= button_to "Start", start_fetchr_path, method: "post" %></p>
+<p><%= button_to "Import all Previous", import_and_start_fetchr_path, method: "post" %></p>
