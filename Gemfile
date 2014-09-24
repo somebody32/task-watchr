@@ -8,6 +8,9 @@ gem 'sinatra', '>= 1.3.0', require: nil
 gem 'omniauth-redbooth', '~> 0.0'
 gem 'omniauth-twitter', '~> 1.0'
 
+gem 'twitter-bootstrap-rails', '~> 3.2'
+gem 'jquery-rails'
+
 group :development, :test do
   gem 'dotenv-rails', '~> 0.11'
   gem 'rspec-rails', '~> 3.1.0'

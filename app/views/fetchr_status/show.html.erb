@@ -1,18 +1,31 @@
-<h1><%= @manager.fetchr_status %></h1>
+<div class="jumbotron">
+  <h1><%= @manager.fetchr_status %></h1>
+</div>
 
-<p>Twitter Account Status</p>
-<p><%= @manager.twitter_status %></p>
-<p><%= button_to @manager.twitter_action_text, "/auth/twitter/", method: "get" %></p>
+<h2><i class="fa fa-twitter"></i>&nbsp;Twitter Account Status</h2>
+<div class="well">
+  <p><%= @manager.twitter_status %></p>
+  <p>
+    <%= button_to @manager.twitter_action_text, "/auth/twitter/", method: "get", class: "btn btn-default" %>
+  </p>
+</div>
 
 <h2>Adapters' State</h2>
-<p>Redbooth</p>
-<p><%= @manager.redbooth_status %></p>
-<p><%= button_to @manager.redbooth_action_text, "/auth/redbooth/", method: "get" %></p>
-<% if @manager.redbooth_connected? %>
-  <p><%= link_to "Configure", edit_redbooth_settings_path %></p>
-<% end %>
+<div class="well">
+  <p><strong>Redbooth</strong></p>
+  <p><%= @manager.redbooth_status %></p>
+  <% if @manager.redbooth_connected? %>
+    <p><%= button_to "Configure", edit_redbooth_settings_path,  method: "get", class: "btn btn-default" %></p>
+  <% end %>
+  <p>
+    <%= button_to @manager.redbooth_action_text, "/auth/redbooth/", method: "get", class: "btn btn-default" %>
+  </p>
+
+</div>
 
 <% if @manager.ready_to_start? %>
-  <p><%= button_to "Start", start_fetchr_path, method: "post" %></p>
-  <p><%= button_to "Import all Previous", import_and_start_fetchr_path, method: "post" %></p>
+  <div class="btn-group">
+    <%= link_to "Start", start_fetchr_path, method: "post", class: "btn btn-primary" %>
+    <%= link_to "Import all previous and Start", import_and_start_fetchr_path, method: "post", class: "btn btn-warning" %>
+  </div>
 <% end %>

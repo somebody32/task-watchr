@@ -14,5 +14,6 @@ Rails.application.routes.draw do
     to: "fetchr_status#import_and_start",
     as: "import_and_start_fetchr"
   )
+  get "reset", to: "reset#reset", as: :reset
   root to: "fetchr_status#show"
 end

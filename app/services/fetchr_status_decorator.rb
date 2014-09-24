@@ -2,7 +2,7 @@ module FetchrStatusDecorator
   module_function
 
   def fetchr_status
-    SocialFetchr.running? ? "Fetcher is running!" : "Fetchr is not running :("
+    SocialFetchr.running? ? "Fetchr is running!" : "Fetchr is not running :("
   end
 
   def twitter_status

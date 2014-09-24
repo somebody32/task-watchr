@@ -22,7 +22,7 @@ module Adapters
         project_id:    project_id,
         task_list_id:  task_list_id,
         task_private:  task_private,
-        task_description: task_description
+        task_description: task_description.present? ? task_description : nil
       }
     end
   end

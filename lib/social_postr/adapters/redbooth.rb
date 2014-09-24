@@ -28,7 +28,7 @@ module SocialPostr
           task_list_id: settings.fetch(:task_list_id),
           is_private:   settings.fetch(:task_private) { false }
         }
-        if settings[:task_description]
+        if settings[:task_description] && settings[:task_description].length > 0
           adapter_settings.merge!(description: settings[:task_description])
         end
         adapter_settings
@@ -47,6 +47,7 @@ module SocialPostr
         if token_expired?
           fail Errors::ExpiredToken
         else
+          puts api_response.inspect
           fail Errors::UnexpectedAPIResponse.new(api_response: api_response)
         end
       end

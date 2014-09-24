@@ -13,7 +13,7 @@ module Adapters
     end
 
     def self.fully_satisfied?
-      new.settings_fullfilled?
+      new.required_settings_fullfilled?
     end
 
     def self.connected?
@@ -29,12 +29,12 @@ module Adapters
       @settings
     end
 
-    def settings_fullfilled?
-      @settings.attributes.values_at(*REQUIRED_FIELDS).all?
+    def required_settings_fullfilled?
+      @settings.attributes.values_at(*REQUIRED_FIELDS).all?(&:present?)
     end
 
     def client_fields_fullfilled?
-      @settings.attributes.values_at(*CLIENT_FIELDS).all?
+      @settings.attributes.values_at(*CLIENT_FIELDS).all?(&:present?)
     end
 
     private

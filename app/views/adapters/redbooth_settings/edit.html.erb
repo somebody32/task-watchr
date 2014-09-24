@@ -1,9 +1,28 @@
 <h1>Edit Settings — Redbooth</h1>
 
 <%= form_for(@settings, url: redbooth_settings_path, method: :put) do |form| %>
-  <p><%= form.select :task_list_id, @task_lists %></p>
-  <p><%= form.radio_button :task_private, true %></p>
-  <p><%= form.radio_button :task_private, false %></p>
-  <p><%= form.text_field :task_description %></p>
-  <%= submit_tag "Save changes" %>
+  <div class="form-group half-spacer">
+    <%= form.label :task_list_id, "Select Task List" %>
+    <%= form.select :task_list_id, @task_lists, {}, class: "form-control"%>
+  </div>
+  <h3 class="spacer">Additional settings for automatically created tasks</h3>
+  <div class="form-group half-spacer">
+    <div class="radio">
+      <label>
+        <%= form.radio_button :task_private, true %>
+        Tasks will be private
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <%= form.radio_button :task_private, false %>
+        Tasks will be public
+      </label>
+    </div>
+  </div>
+  <div class="form-group half-spacer">
+    <%= form.label :task_list_id, "Tasks description" %>
+    <%= form.text_field :task_description, class: "form-control" %>
+  </div>
+  <%= submit_tag "Save changes", class: "spacer btn btn-primary" %>
 <% end -%>
