@@ -3,8 +3,6 @@
 # Task Watchr
 
 ## What is this?
-See it in action: [Live Demo](http://task-watchr.herokuapp.com/)
-
 This is a simple way to create tasks in your favourite task management systems
 via twitter mentions.
 
